@@ -1,5 +1,7 @@
 from dotenv import load_dotenv
 from apis.messages import *
+from telegram import Bot
+import asyncio
 import os
 
 load_dotenv()
@@ -7,34 +9,14 @@ load_dotenv()
 group = os.getenv("group")
 token = os.getenv("token")
 
-# print(f"token: {token}")
-# print(f"group: {group}")
 
-bot = Messages(token, group)
+async def send_message_async(token, chat_id, text):
+    """Асинхронно отправить сообщение в канал."""
+    bot = Bot(token)
+    await bot.send_message(chat_id=chat_id, text=text)
+    print(f"Message sent to {chat_id}")
 
-# Получить администраторов и их права
-# response = bot.get_updates()
-# print(response)
-
-# Отправить сообщение
-# response = bot.send_message("Привет, группа!")
-# print(response)
-
-# Получить информацию о группе
-chat_info = bot.get_chat_info()
-print(chat_info)
-
-# Удалить сообщение (например, по ID)
-# message_id = 6
-# delete_response = bot.delete_message(message_id)
-# print(delete_response)
-
-# Получить последние сообщения
-# messages = bot.get_messages()
-# print(messages)
-
-# Изменить сообщение
-# edit_response = bot.edit_message(6, "Новый текст для сообщения")
-# print(edit_response)
-
-
+if __name__ == "__main__":
+    message_text = "Hello, this is a test message from python-telegram-bot with asyncio!"
+    
+    asyncio.run(send_message_async(token, group, message_text))
